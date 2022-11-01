@@ -24,10 +24,8 @@ export function jsxConverter(translation: string, placeholders: any) {
         part = part.substring(1);
       }
 
-      return (
-        <React.Fragment key={index}>
-          {placeholders[part] || part}
-        </React.Fragment>
-      );
+      let value = placeholders[part] !== undefined ? placeholders[part] : part;
+
+      return <React.Fragment key={index}>{value}</React.Fragment>;
     });
 }
