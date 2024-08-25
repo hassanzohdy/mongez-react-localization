@@ -606,25 +606,23 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@mongez/events@1.0.x":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@mongez/events/-/events-1.0.9.tgz#8d9c3d3830c5973740b76869ac3a08d64a7fbdbc"
-  integrity sha512-6vJaOeG6RE2Tzv9MsWVfBAqr5K/qESpymhlTPca5qs0bX4MGhHxAcBthhqByf6MJlAXwTGbBzoe9kmE6wGp3VA==
+"@mongez/events@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@mongez/events/-/events-2.1.0.tgz#644fa0c0ae226f162ccca4a755a059892d545253"
+  integrity sha512-gUTDm8fy0BRJmG/kkSmLi/Ir2PAFQQtk0FE9GGivnIK5YpGJD6MFrIj3Ui8SN3mMFKvCJae6zJjuYv6fLFQgBQ==
 
-"@mongez/localization@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@mongez/localization/-/localization-2.0.5.tgz#7ca770a7c1726d008b7bcf4f3fd440a9764cb4a5"
-  integrity sha512-SrNv/R+i+TUThVxVmVslQ4SEAIxAhelM3VjlmX0j444ULVP3YApktgcdx/4cERhhVQBKxAC7zJUmHTDYgqi8Ag==
+"@mongez/localization@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@mongez/localization/-/localization-3.0.0.tgz#20bce6e7aac7d04435139f1415946b890cb0cf4a"
+  integrity sha512-+308DSwq/T4p4IOjFVvI7RJsKRlhH3DRYqUJHuHzOD1fPJcG4dCalXPNdbDClvQRSvi4lwiyQaxwegskXaNmXg==
   dependencies:
-    "@mongez/events" "1.0.x"
-    "@mongez/reinforcements" "1.0.x"
+    "@mongez/events" "^2.1.0"
+    "@mongez/reinforcements" "^2.3.8"
 
-"@mongez/reinforcements@1.0.x":
-  version "1.0.28"
-  resolved "https://registry.yarnpkg.com/@mongez/reinforcements/-/reinforcements-1.0.28.tgz#c6298e07e4267ab4092ecd936c6bbee5a3c51e21"
-  integrity sha512-Pv5Bj5/8u0i3TAoz0mfjizNup758uMt/NHM4C3ZyfaqCAZU7OiOGclgy2x/dbln0U26akNhl72cLqQm967MWhA==
-  dependencies:
-    immutable "^4.1.0"
+"@mongez/reinforcements@^2.3.8":
+  version "2.3.10"
+  resolved "https://registry.yarnpkg.com/@mongez/reinforcements/-/reinforcements-2.3.10.tgz#cf47b3196cf5283ea7d4228652df6ee2e2cb2296"
+  integrity sha512-jGTDXo2AO+E0Xuy1iTmJHlz2W/dbxWBTuy/J1MRjKs140JNG3mDqM1Msv1a6aLCg7toHqiRusdI13JuMNqWtOw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1638,11 +1636,6 @@ ignore@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
-
-immutable@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.1.0.tgz#f795787f0db780183307b9eb2091fcac1f6fafef"
-  integrity sha512-oNkuqVTA8jqG1Q6c+UglTOD1xhC1BtjKI7XkCXRkZHrN5m18/XsnUp8Q89GkQO/z+0WjonSvl0FLhDYftp46nQ==
 
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
