@@ -14,6 +14,7 @@ export function jsxConverter(
   placeholderPattern: RegExp,
 ) {
   if (
+    placeholders == null ||
     typeof placeholders !== "object" ||
     Object.keys(placeholders).length === 0
   ) {

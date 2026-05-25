@@ -1,0 +1,136 @@
+---
+name: mongez-react-localization-jsx-converter
+description: Deep reference for jsxConverter — its signature, splitter mechanics, missing-key behaviour, empty-placeholder guard, double-curly pattern support, the null-placeholder bug, and React key assignment.
+when_to_use: User calls jsxConverter directly, user wires jsxConverter into setLocalizationConfigurations({ converter }), user encounters unexpected output from trans() after enabling the converter, user hits the null/undefined placeholder crash at src/converters.tsx:18.
+---
+
+# `jsxConverter`
+
+The placeholder-to-React converter. Drop into the localization config once, every `trans(...)` call gains JSX support.
+
+## Signature
+
+```ts
+function jsxConverter(
+  translation: string,
+  placeholders: any,
+  placeholderPattern: RegExp,
+): string | React.ReactNode[];
+```
+
+## Wiring it globally
+
+```ts
+import { setLocalizationConfigurations } from "@mongez/localization";
+import { jsxConverter } from "@mongez/react-localization";
+
+setLocalizationConfigurations({
+  defaultLocaleCode: "en",
+  fallback: "en",
+  converter: jsxConverter,
+});
+```
+
+After this runs, `trans(...)` returns:
+
+- a **string** when there are no placeholders or the placeholders bag is empty / a primitive,
+- an **array of React fragments** when at least one placeholder is resolved.
+
+## Splitter mechanics
+
+The converter calls `translation.split(placeholderPattern)`. With a global RegExp containing a single capturing group (like the default `/:([a-zA-Z0-9_-]+)/g`), `split` interleaves literal segments and captured names:
+
+```
+"Create new :item for :who"
+        |
+        v
+["Create new ", "item", " for ", "who", ""]
+```
+
+Even-indexed entries are literal text; odd-indexed entries are placeholder names. The converter maps each part to a `React.Fragment`, substituting `placeholders[name]` for odd entries.
+
+## Missing-key behaviour
+
+When a token appears in the template but is not present in `placeholders` (or its value is `null`/`undefined`), the rendered text is the **bare key**, with no leading colon. The leading `:` is gone because the splitter captured only the name.
+
+```tsx
+extend("en", { createItem: "Create new :item" });
+
+transX("createItem", { wrongKey: "user" });
+// → <Fragment>Create new </Fragment><Fragment>item</Fragment>
+// → DOM text: "Create new item"
+```
+
+This is intentional fallback behaviour — pin it in your snapshots if you depend on it.
+
+## Empty / primitive placeholders bag
+
+Guard at the top of the function:
+
+```ts
+if (typeof placeholders !== "object" || Object.keys(placeholders).length === 0) {
+  return translation; // plain string
+}
+```
+
+So:
+
+- `jsxConverter("Hello", 10, ...)` → `"Hello"` (string, no split)
+- `jsxConverter("Hello", "x", ...)` → `"Hello"` (string)
+- `jsxConverter("Hello", {}, ...)` → `"Hello"` (string)
+
+This is how `trans("greeting")` and `trans("greeting", 10)` keep their string return type when the converter is wired globally.
+
+## Double-curly pattern
+
+`@mongez/localization` supports `colon`, `doubleCurly`, or custom patterns:
+
+```ts
+setLocalizationConfigurations({
+  placeholderPattern: "doubleCurly",
+  converter: jsxConverter,
+});
+
+extend("en", { hi: "Hello {{name}}!" });
+
+trans("hi", { name: <strong>Ada</strong> });
+// → DOM: "Hello Ada!" with <strong>Ada</strong> in place.
+```
+
+`jsxConverter` doesn't hardcode a pattern — the pattern is supplied per call by `transFrom`, which reads it from the config.
+
+## Bug: `null` / `undefined` placeholders crash
+
+`src/converters.tsx:18`. Because `typeof null === "object"`, the guard doesn't short-circuit on null:
+
+```ts
+typeof null !== "object"          // → false
+Object.keys(null).length === 0    // → throws: Cannot convert undefined or null to object
+```
+
+So `jsxConverter("Hello", null, /.../)` throws.
+
+In practice this doesn't bite — `trans` only calls the converter when `placeholders` is truthy. But if you wire `jsxConverter` into a custom translate pipeline, **never pass `null`**.
+
+A `.skip()`'d regression test pins this in `src/__tests__/converters.test.tsx`.
+
+## React keys
+
+The converter assigns each fragment a numeric `key={index}`. With deterministic numeric keys derived from the split index, React doesn't emit "each child in a list should have a unique key" warnings, AND fragments don't reconcile across re-renders (they're recreated each time `trans` runs, which is fine because `React.Fragment` carries no DOM state).
+
+## Direct invocation
+
+You can call `jsxConverter` outside of `trans` if you have your own translation lookup:
+
+```ts
+import { jsxConverter } from "@mongez/react-localization";
+
+const out = jsxConverter(
+  "Welcome :name",
+  { name: <strong>Ada</strong> },
+  /:([a-zA-Z0-9_-]+)/g,
+);
+// out is an array of React.Fragments
+```
+
+Mind the `null` bug if you're doing this.
