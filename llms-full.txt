@@ -22,6 +22,9 @@ That's the entire surface. Everything else — `extend`, `trans`, `transFrom`, `
 
 ## `jsxConverter(translation, placeholders, placeholderPattern)`
 
+> **Auto-trigger:** code imports `jsxConverter` from `@mongez/react-localization`; code calls `setLocalizationConfigurations({ converter: jsxConverter })`; user asks "how do I render JSX inside trans()", "why does trans() return an array", "how do placeholders work with React elements", or "why does jsxConverter crash on null"; `import { jsxConverter } from "@mongez/react-localization"`.
+> **Skip when:** `mongez-react-localization-trans-x` (per-call JSX without flipping global converter), `mongez-react-localization-overview` (package-level intro), `mongez-react-localization-recipes` (usage patterns); `@mongez/localization` is the framework-agnostic core that defines `trans`, `plainConverter`, and the placeholder pattern — this skill is the React-specific converter layer; react-i18next, react-intl, or other i18n libraries.
+
 ```ts
 function jsxConverter(
   translation: string,
@@ -55,6 +58,9 @@ In practice this doesn't bite — `trans` only calls the converter when `placeho
 A skipped test in `src/__tests__/converters.test.tsx` pins this.
 
 ## `transX(keyword, placeholders?)`
+
+> **Auto-trigger:** code imports `transX` from `@mongez/react-localization`; code calls `transX(keyword, placeholders)` at a JSX call site; user asks "how is transX different from trans", "how do I use JSX placeholders without changing the global converter", or "how do I mix plain and JSX trans calls"; `import { transX } from "@mongez/react-localization"`.
+> **Skip when:** `mongez-react-localization-jsx-converter` (converter mechanics and the null bug), `mongez-react-localization-overview` (package-level intro and the two paths), `mongez-react-localization-recipes` (real-world locale-switching and `Translate` patterns); `@mongez/localization` exposes the underlying `trans`, `transFrom`, `plainTrans` — this skill is the React-bound variant; react-i18next, react-intl.
 
 ```ts
 function transX(keyword: string, placeholders?: any): string | React.ReactNode[];
@@ -131,6 +137,9 @@ If you build option 3 inside this package as a first-class export, **use `useSyn
 `trans` / `transX` return `string` OR `string | React.ReactNode[]` depending on whether placeholders were resolved. Consumers that pass the result to non-React APIs (e.g. setting `document.title`) must handle the array case. The simplest rule: if you might pass JSX as a placeholder, the return is an array.
 
 ## Patterns
+
+> **Auto-trigger:** code uses `transX`, `jsxConverter`, `setCurrentLocaleCode`, `localizationEvents`, or `useSyncExternalStore` for locale switching; user asks "how do I render a link inside a translated sentence", "how do I re-render on locale change", "how do I build a useLocale hook", "how do I make a Translate component", or "how do I do pluralization with JSX"; `import { transX } from "@mongez/react-localization"` alongside `extend`/`setCurrentLocaleCode` from `@mongez/localization`.
+> **Skip when:** `mongez-react-localization-jsx-converter` (converter internals), `mongez-react-localization-trans-x` (the bare function reference), `mongez-react-localization-overview` (install/intro); `@mongez/localization` is the framework-agnostic core for registry and count rules; `@mongez/react-atom` for atom-driven state — referenced here but its own skill set covers atom internals; react-i18next, react-intl.
 
 ### Drop JSX into a translated sentence
 

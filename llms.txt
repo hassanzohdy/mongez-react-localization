@@ -7,14 +7,18 @@ Tiny by design. The entire public API is two exports: `jsxConverter` and `transX
 ## Docs
 
 - [Overview](https://raw.githubusercontent.com/hassanzohdy/mongez-react-localization/main/skills/overview.md): Pitch, install, the two exports.
+  - *Auto-trigger:* Importing from `@mongez/react-localization`, deciding between global `jsxConverter` vs per-call `transX`, or asking what the package does.
 - [README](https://raw.githubusercontent.com/hassanzohdy/mongez-react-localization/main/README.md): Usage, recipes, limitations.
 - [Changelog](https://raw.githubusercontent.com/hassanzohdy/mongez-react-localization/main/CHANGELOG.md): Release notes.
 
 ## Reference
 
 - [`jsxConverter`](https://raw.githubusercontent.com/hassanzohdy/mongez-react-localization/main/skills/jsx-converter.md): The converter function. Wire globally via `setLocalizationConfigurations({ converter: jsxConverter })`.
+  - *Auto-trigger:* Importing `jsxConverter`, wiring it via `setLocalizationConfigurations`, debugging missing-key fallback or the null-placeholder crash.
 - [`transX`](https://raw.githubusercontent.com/hassanzohdy/mongez-react-localization/main/skills/trans-x.md): `trans` pre-bound to `jsxConverter`. Use per-call when the global converter stays as `plainConverter`.
+  - *Auto-trigger:* Calling `transX` to interpolate React elements at a specific JSX call site without changing the global converter.
 - [Recipes](https://raw.githubusercontent.com/hassanzohdy/mongez-react-localization/main/skills/recipes.md): JSX inside sentences, atom-driven locale switch, pluralization.
+  - *Auto-trigger:* Rendering JSX inside translations, building `useLocale` over `localizationEvents`, atom/state-driven locale re-renders, or a `<Translate>` wrapper.
 
 ## Quick rules
 

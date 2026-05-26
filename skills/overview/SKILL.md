@@ -1,7 +1,9 @@
 ---
 name: mongez-react-localization-overview
-description: Package overview for @mongez/react-localization — what it exports, how it relates to @mongez/localization, and when to use each of its two exports.
-when_to_use: User imports from @mongez/react-localization for the first time, user asks what the package does or what it exports, user is deciding whether to use jsxConverter globally or transX per call site, user needs install or import instructions.
+description: |
+  Package overview for `@mongez/react-localization` — what it exports, how it relates to `@mongez/localization`, and when to use each of its two exports.
+  TRIGGER when: code imports `jsxConverter` or `transX` from `@mongez/react-localization`; user asks "what does @mongez/react-localization do", "how do I install @mongez/react-localization", "should I use jsxConverter or transX", or "what's the difference between this and @mongez/localization"; `import { jsxConverter, transX } from "@mongez/react-localization"`.
+  SKIP: `mongez-react-localization-jsx-converter` (deep dive on converter mechanics), `mongez-react-localization-trans-x` (per-call JSX function), `mongez-react-localization-recipes` (real-world patterns); `@mongez/localization` is the framework-agnostic core (registry, locale switching, count rules) — this skill is the React adapter layer; react-i18next, react-intl, FormatJS.
 ---
 
 # Overview
