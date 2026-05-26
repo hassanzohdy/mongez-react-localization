@@ -1,8 +1,8 @@
 ---
 name: mongez-react-localization-jsx-converter
 description: |
-  Deep reference for `jsxConverter` — its signature, splitter mechanics, missing-key behaviour, empty-placeholder guard, double-curly pattern support, the null-placeholder bug, and React key assignment.
-  TRIGGER when: code imports `jsxConverter` from `@mongez/react-localization`; code calls `setLocalizationConfigurations({ converter: jsxConverter })`; user asks "how do I render JSX inside trans()", "why does trans() return an array", "how do placeholders work with React elements", or "why does jsxConverter crash on null"; `import { jsxConverter } from "@mongez/react-localization"`.
+  Deep reference for `jsxConverter` — its signature, splitter mechanics, missing-key behaviour, empty / null / primitive placeholder guard, double-curly pattern support, and React key assignment.
+  TRIGGER when: code imports `jsxConverter` from `@mongez/react-localization`; code calls `setLocalizationConfigurations({ converter: jsxConverter })`; user asks "how do I render JSX inside trans()", "why does trans() return an array", or "how do placeholders work with React elements"; `import { jsxConverter } from "@mongez/react-localization"`.
   SKIP: `mongez-react-localization-trans-x` (per-call JSX without flipping global converter), `mongez-react-localization-overview` (package-level intro), `mongez-react-localization-recipes` (usage patterns); `@mongez/localization` is the framework-agnostic core that defines `trans`, `plainConverter`, and the placeholder pattern — this skill is the React-specific converter layer; react-i18next, react-intl, or other i18n libraries.
 ---
 
@@ -65,12 +65,16 @@ transX("createItem", { wrongKey: "user" });
 
 This is intentional fallback behaviour — pin it in your snapshots if you depend on it.
 
-## Empty / primitive placeholders bag
+## Empty / primitive / null placeholders bag
 
 Guard at the top of the function:
 
 ```ts
-if (typeof placeholders !== "object" || Object.keys(placeholders).length === 0) {
+if (
+  placeholders == null ||
+  typeof placeholders !== "object" ||
+  Object.keys(placeholders).length === 0
+) {
   return translation; // plain string
 }
 ```
@@ -80,8 +84,10 @@ So:
 - `jsxConverter("Hello", 10, ...)` → `"Hello"` (string, no split)
 - `jsxConverter("Hello", "x", ...)` → `"Hello"` (string)
 - `jsxConverter("Hello", {}, ...)` → `"Hello"` (string)
+- `jsxConverter("Hello", null, ...)` → `"Hello"` (string)
+- `jsxConverter("Hello", undefined, ...)` → `"Hello"` (string)
 
-This is how `trans("greeting")` and `trans("greeting", 10)` keep their string return type when the converter is wired globally.
+This is how `trans("greeting")` and `trans("greeting", 10)` keep their string return type when the converter is wired globally. The `== null` check handles both `null` and `undefined` via loose equality before the `Object.keys(...)` call, so calling `jsxConverter` directly with a null / undefined bag is safe.
 
 ## Double-curly pattern
 
@@ -100,21 +106,6 @@ trans("hi", { name: <strong>Ada</strong> });
 ```
 
 `jsxConverter` doesn't hardcode a pattern — the pattern is supplied per call by `transFrom`, which reads it from the config.
-
-## Bug: `null` / `undefined` placeholders crash
-
-`src/converters.tsx:18`. Because `typeof null === "object"`, the guard doesn't short-circuit on null:
-
-```ts
-typeof null !== "object"          // → false
-Object.keys(null).length === 0    // → throws: Cannot convert undefined or null to object
-```
-
-So `jsxConverter("Hello", null, /.../)` throws.
-
-In practice this doesn't bite — `trans` only calls the converter when `placeholders` is truthy. But if you wire `jsxConverter` into a custom translate pipeline, **never pass `null`**.
-
-A `.skip()`'d regression test pins this in `src/__tests__/converters.test.tsx`.
 
 ## React keys
 
@@ -135,4 +126,4 @@ const out = jsxConverter(
 // out is an array of React.Fragments
 ```
 
-Mind the `null` bug if you're doing this.
+Null, undefined, primitive, and empty-object placeholder bags are all handled by the guard at the top of the function — they short-circuit to the raw translation string.
