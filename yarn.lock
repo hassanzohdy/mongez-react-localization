@@ -343,18 +343,18 @@
   resolved "https://registry.yarnpkg.com/@mongez/events/-/events-2.1.0.tgz#644fa0c0ae226f162ccca4a755a059892d545253"
   integrity sha512-gUTDm8fy0BRJmG/kkSmLi/Ir2PAFQQtk0FE9GGivnIK5YpGJD6MFrIj3Ui8SN3mMFKvCJae6zJjuYv6fLFQgBQ==
 
-"@mongez/localization@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@mongez/localization/-/localization-3.0.0.tgz#20bce6e7aac7d04435139f1415946b890cb0cf4a"
-  integrity sha512-+308DSwq/T4p4IOjFVvI7RJsKRlhH3DRYqUJHuHzOD1fPJcG4dCalXPNdbDClvQRSvi4lwiyQaxwegskXaNmXg==
+"@mongez/localization@^3.4.0":
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/@mongez/localization/-/localization-3.4.5.tgz#b8ea55ef1f08fae0954b94614e114288ace5cae8"
+  integrity sha512-odvnLLG4Jj87QLjHXIztgMamcPjYAqgGGpUg9LP0Cm1MtCJkuro+rneRzR3xnGl4q7SM3K6Ab5+PYWxcAckqNw==
   dependencies:
     "@mongez/events" "^2.1.0"
-    "@mongez/reinforcements" "^2.3.8"
+    "@mongez/reinforcements" "^3.0.0"
 
-"@mongez/reinforcements@^2.3.8":
-  version "2.3.10"
-  resolved "https://registry.yarnpkg.com/@mongez/reinforcements/-/reinforcements-2.3.10.tgz#cf47b3196cf5283ea7d4228652df6ee2e2cb2296"
-  integrity sha512-jGTDXo2AO+E0Xuy1iTmJHlz2W/dbxWBTuy/J1MRjKs140JNG3mDqM1Msv1a6aLCg7toHqiRusdI13JuMNqWtOw==
+"@mongez/reinforcements@^3.0.0":
+  version "3.1.16"
+  resolved "https://registry.yarnpkg.com/@mongez/reinforcements/-/reinforcements-3.1.16.tgz#ce29f71aae3a2950ac24f822e5370d89ec8f009e"
+  integrity sha512-VgoRh2txp5LYnUzFaA5jXcwyykm5u00SfiGJtKwwuj7t7m2c1oDEDaBGGZ8BBMdznkOLYjI6/meVy+ZVsY0ZaA==
 
 "@rolldown/pluginutils@1.0.0-beta.27":
   version "1.0.0-beta.27"
