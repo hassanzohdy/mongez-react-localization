@@ -41,7 +41,7 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       # Override the React major when the matrix asks for one we don't pin.
       # The package itself only uses React.Fragment, but we cross-test 19

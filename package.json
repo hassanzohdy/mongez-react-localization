@@ -1,6 +1,6 @@
 {
   "name": "@mongez/react-localization",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "React adapter for @mongez/localization. Adds a JSX-aware placeholder converter so `trans(...)` can interpolate React elements, plus `transX` — a JSX-bound translate function that works regardless of the globally configured converter.",
   "main": "src/index.ts",
   "sideEffects": false,
