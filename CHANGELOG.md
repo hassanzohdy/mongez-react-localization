@@ -1,6 +1,6 @@
 # Changelog — @mongez/react-localization
 
-## Unreleased
+## [3.4.6] — 2026-05-26
 
 ### Changed
 
@@ -29,7 +29,3 @@
 ### Fixed
 
 - **`jsxConverter` crashed on `null` / `undefined` placeholders** (`src/converters.tsx:18`). The guard read `typeof placeholders !== "object"` but `typeof null === "object"`, so the short-circuit didn't fire and the subsequent `Object.keys(null)` threw "Cannot convert undefined or null to object". Added an explicit `placeholders == null` check (covers both `null` and `undefined`) ahead of the `typeof` test; the previously `.skip()`'d test in `src/__tests__/converters.test.tsx` is now active. In practice the bug only triggered when callers invoked `jsxConverter` directly — `trans` skips the converter when `placeholders` is falsy.
-
-### Known issues (not fixed in this release)
-
-- **No locale-change subscription**. There is no `useLocale()`, no `useTranslate()`, no `<Translate>` component, no provider. A component that calls `transX(...)` will NOT re-render when `setCurrentLocaleCode(...)` flips the locale code — the parent must trigger a re-render some other way (state, atom, event). This isn't a regression; it's the historical shape of the package. Documented in `README.md` as a limitation along with the **React 18 tearing risk** that a naive `useState + useEffect(localizationEvents.onChange)` implementation would introduce. If future hooks land here, they should use `useSyncExternalStore`.
