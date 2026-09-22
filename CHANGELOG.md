@@ -1,5 +1,11 @@
 # Changelog — @mongez/react-localization
 
+## [3.5.0] — 2026-09-22
+
+### Changed
+
+- Align the adapter with `@mongez/localization 3.5.0`: publish the exact `3.5.0` localization peer while retaining the `react >=18.0.0` peer. Runtime API is unchanged.
+
 ## [3.4.6] — 2026-05-26
 
 ### Changed
