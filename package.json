@@ -11,7 +11,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
-    "@mongez/localization": "3.5.0",
+    "@mongez/localization": "3.5.1",
     "react": ">=18.0.0"
   },
   "devDependencies": {
