@@ -1,5 +1,15 @@
 # Changelog — @mongez/react-localization
 
+## [3.5.2] — 2026-11-16
+
+### Fixed
+
+- `jsxConverter` resolves hyphenated placeholder keys the same way as `plainConverter` in `@mongez/localization` 3.5.2, whose default colon pattern stops at a hyphen. `:minutes-min` with `{ minutes: 5 }` renders `5-min`; with `{ "minutes-min": 5 }` it renders `5`, as before; the longest hyphenated key that exists wins. Without this, a hyphenated key would have stopped matching under the new pattern. A placeholder with no value still renders its bare key.
+
+### Changed
+
+- Released together with `@mongez/localization` 3.5.2 (same family version).
+
 ## [3.5.0] — 2026-09-22
 
 ### Changed

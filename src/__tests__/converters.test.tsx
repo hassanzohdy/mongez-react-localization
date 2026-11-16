@@ -155,3 +155,49 @@ describe("jsxConverter — key stability", () => {
     expect(hasKeyWarning).toBe(false);
   });
 });
+
+describe("jsxConverter — hyphens after a placeholder (localization 3.5.2 colon pattern)", () => {
+  // The default colon pattern from @mongez/localization 3.5.2 stops at a hyphen.
+  const PATTERN = /:([a-zA-Z0-9_]+)/g;
+  const text = (out: any) => render(<span>{out}</span>).container.textContent;
+
+  it("substitutes the name and keeps the hyphen segment as text", () => {
+    expect(text(jsxConverter("past the :minutes-min mark", { minutes: 5 }, PATTERN))).toBe(
+      "past the 5-min mark",
+    );
+  });
+
+  it("uses an exact hyphenated key when the placeholders object has it", () => {
+    expect(text(jsxConverter(":minutes-min left", { "minutes-min": 5 }, PATTERN))).toBe("5 left");
+    expect(
+      text(jsxConverter(":minutes-min left", { minutes: 1, "minutes-min": 5 }, PATTERN)),
+    ).toBe("5 left");
+  });
+
+  it("uses the longest hyphenated key that exists", () => {
+    expect(text(jsxConverter(":a-b-c", { a: 1, "a-b": 2 }, PATTERN))).toBe("2-c");
+    expect(text(jsxConverter(":a-b-c", { a: 1 }, PATTERN))).toBe("1-b-c");
+  });
+
+  it("keeps a JSX value as an element", () => {
+    const { getByTestId, container } = render(
+      <span>{jsxConverter(":count-day streak", { count: <b data-testid="c">7</b> }, PATTERN)}</span>,
+    );
+    expect(getByTestId("c").tagName).toBe("B");
+    expect(container.textContent).toBe("7-day streak");
+  });
+
+  it("still renders the bare key when no value exists", () => {
+    expect(text(jsxConverter(":minutes-min", { other: 1 }, PATTERN))).toBe("minutes-min");
+  });
+
+  it("does not join hyphen text after a closing delimiter into the key", () => {
+    expect(text(jsxConverter("{{a}}-b", { a: 1, "a-b": 2 }, /{{([a-zA-Z0-9_-]+)}}/g))).toBe(
+      "1-b",
+    );
+  });
+
+  it("replaces every occurrence with a sticky pattern", () => {
+    expect(text(jsxConverter("x :a :a", { a: 1 }, /:([a-z]+)/y))).toBe("x 1 1");
+  });
+});

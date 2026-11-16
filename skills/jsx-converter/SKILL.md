@@ -38,7 +38,7 @@ After this runs, `trans(...)` returns:
 
 ## Splitter mechanics
 
-The converter calls `translation.split(placeholderPattern)`. With a global RegExp containing a single capturing group (like the default `/:([a-zA-Z0-9_-]+)/g`), `split` interleaves literal segments and captured names:
+The converter walks every match of `placeholderPattern` (a RegExp with a single capturing group around the name, like the default `/:([a-zA-Z0-9_]+)/g` from `@mongez/localization` 3.5.2) and interleaves literal segments and placeholder names, as `split` would:
 
 ```
 "Create new :item for :who"
@@ -47,11 +47,21 @@ The converter calls `translation.split(placeholderPattern)`. With a global RegEx
 ["Create new ", "item", " for ", "who", ""]
 ```
 
-Even-indexed entries are literal text; odd-indexed entries are placeholder names. The converter maps each part to a `React.Fragment`, substituting `placeholders[name]` for odd entries.
+Even-indexed entries are literal text; odd-indexed entries are placeholder names. The converter maps each part to a `React.Fragment`, substituting `placeholders[name]` for odd entries. Every occurrence is replaced, whatever the pattern's flags.
+
+### Hyphens after a placeholder (3.5.2)
+
+The default colon pattern stops at a hyphen, so `-min` in `:minutes-min` is text. When the placeholders object has a hyphenated key, the longest one that exists wins, the same rule as `plainConverter`:
+
+```tsx
+jsxConverter(":minutes-min", { minutes: 5 }, pattern);         // "5-min"
+jsxConverter(":minutes-min", { "minutes-min": 5 }, pattern);   // "5"
+jsxConverter(":a-b-c", { a: 1, "a-b": 2 }, pattern);           // "2-c"
+```
 
 ## Missing-key behaviour
 
-When a token appears in the template but is not present in `placeholders` (or its value is `null`/`undefined`), the rendered text is the **bare key**, with no leading colon. The leading `:` is gone because the splitter captured only the name.
+When a token appears in the template but is not present in `placeholders` (or its value is `null`/`undefined`), the rendered text is the **bare key**, with no leading colon. The leading `:` is gone because only the captured name is kept.
 
 ```tsx
 extend("en", { createItem: "Create new :item" });
@@ -119,7 +129,7 @@ import { jsxConverter } from "@mongez/react-localization";
 const out = jsxConverter(
   "Welcome :name",
   { name: <strong>Ada</strong> },
-  /:([a-zA-Z0-9_-]+)/g,
+  /:([a-zA-Z0-9_]+)/g,
 );
 // out is an array of React.Fragments
 ```
