@@ -11,7 +11,7 @@ const hyphenTailPattern = /^(?:-[a-zA-Z0-9_]+)+/;
  * A placeholder followed by hyphen segments uses the longest hyphenated key present
  * in the placeholders object (`:minutes-min` with `{ "minutes-min": 5 }` gives `5`).
  * Otherwise the name is used on its own and the segments stay as text, the same rule
- * as `plainConverter` in `@mongez/localization` 3.5.2, whose default colon pattern
+ * as `plainConverter` in `@mongez/localization` 3.6.0, whose default colon pattern
  * stops at a hyphen.
  *
  * @param translation The translation string containing placeholders.

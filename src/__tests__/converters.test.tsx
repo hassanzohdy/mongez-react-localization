@@ -156,8 +156,8 @@ describe("jsxConverter — key stability", () => {
   });
 });
 
-describe("jsxConverter — hyphens after a placeholder (localization 3.5.2 colon pattern)", () => {
-  // The default colon pattern from @mongez/localization 3.5.2 stops at a hyphen.
+describe("jsxConverter — hyphens after a placeholder (localization 3.6.0 colon pattern)", () => {
+  // The default colon pattern from @mongez/localization 3.6.0 stops at a hyphen.
   const PATTERN = /:([a-zA-Z0-9_]+)/g;
   const text = (out: any) => render(<span>{out}</span>).container.textContent;
 

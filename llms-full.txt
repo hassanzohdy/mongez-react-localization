@@ -38,7 +38,7 @@ The converter that swaps placeholder tokens in a translation string for React ch
 ### Behaviour
 
 1. **Non-object placeholders are a no-op.** When `placeholders` is a primitive (e.g. `10`, `"x"`) or an empty object, the translation is returned as a plain string. This is the guard that lets `trans("hello")` and `trans("hello", 10)` still return strings.
-2. **Matches the supplied pattern.** The pattern needs a single capturing group around the placeholder name; every occurrence is replaced. The default in `@mongez/localization` 3.5.2 is `/:([a-zA-Z0-9_]+)/g`, which stops at a hyphen.
+2. **Matches the supplied pattern.** The pattern needs a single capturing group around the placeholder name; every occurrence is replaced. The default in `@mongez/localization` 3.6.0 is `/:([a-zA-Z0-9_]+)/g`, which stops at a hyphen.
 3. **Odd-indexed parts are placeholder keys.** Literals and placeholders interleave: even indices are literal text, odd indices are placeholder names. A placeholder followed by hyphen segments uses the longest hyphenated key present in `placeholders` (`:minutes-min` with `{ "minutes-min": 5 }` gives `5`; with `{ minutes: 5 }` it gives `5-min`).
 4. **Missing keys fall back to the bare key.** If `placeholders[key]` is `undefined` (or `null`), the rendered text is the key name itself — e.g. `Create new :item` with `placeholders = { wrong: "x" }` renders as `Create new item`. The leading `:` is gone because only the captured name is kept.
 5. **Returns an array.** When at least one placeholder is found, the result is `Array<React.ReactNode>` of `React.Fragment`s with deterministic numeric keys. Render via `{trans(...)}` inside any JSX expression slot.

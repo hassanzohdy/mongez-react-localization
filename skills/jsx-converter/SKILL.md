@@ -38,7 +38,7 @@ After this runs, `trans(...)` returns:
 
 ## Splitter mechanics
 
-The converter walks every match of `placeholderPattern` (a RegExp with a single capturing group around the name, like the default `/:([a-zA-Z0-9_]+)/g` from `@mongez/localization` 3.5.2) and interleaves literal segments and placeholder names, as `split` would:
+The converter walks every match of `placeholderPattern` (a RegExp with a single capturing group around the name, like the default `/:([a-zA-Z0-9_]+)/g` from `@mongez/localization` 3.6.0) and interleaves literal segments and placeholder names, as `split` would:
 
 ```
 "Create new :item for :who"
@@ -49,7 +49,7 @@ The converter walks every match of `placeholderPattern` (a RegExp with a single 
 
 Even-indexed entries are literal text; odd-indexed entries are placeholder names. The converter maps each part to a `React.Fragment`, substituting `placeholders[name]` for odd entries. Every occurrence is replaced, whatever the pattern's flags.
 
-### Hyphens after a placeholder (3.5.2)
+### Hyphens after a placeholder (3.6.0)
 
 The default colon pattern stops at a hyphen, so `-min` in `:minutes-min` is text. When the placeholders object has a hyphenated key, the longest one that exists wins, the same rule as `plainConverter`:
 
